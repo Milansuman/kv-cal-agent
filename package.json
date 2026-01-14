@@ -1,0 +1,36 @@
+{
+  "name": "kv-cal-agent",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc && dotenv -- node ./dist/agent.js",
+    "db:up": "docker compose up",
+    "db:push": "drizzle-kit push"
+  },
+  "devDependencies": {
+    "@types/marked-terminal": "^6.1.1",
+    "@types/pg": "^8.16.0",
+    "drizzle-kit": "^0.31.8",
+    "nodemon": "^3.1.11",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@langchain/core": "^1.1.13",
+    "@langchain/groq": "^1.0.3",
+    "@langchain/langgraph": "^1.0.15",
+    "chalk": "^5.6.2",
+    "dotenv": "^17.2.3",
+    "dotenv-cli": "^11.0.0",
+    "drizzle-orm": "^0.45.1",
+    "langchain": "^1.2.8",
+    "marked": "^15.0.12",
+    "marked-terminal": "^7.3.0",
+    "pg": "^8.16.3"
+  }
+}
