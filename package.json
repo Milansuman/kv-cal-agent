@@ -31,6 +31,7 @@
     "langchain": "^1.2.8",
     "marked": "^15.0.12",
     "marked-terminal": "^7.3.0",
+    "netra-sdk": "file:netra-sdk-1.0.0.tgz",
     "pg": "^8.16.3"
   }
 }

@@ -9,6 +9,7 @@ import { conflictDetectionGraph } from './conflict.js';
 import chalk from 'chalk';
 import { marked } from 'marked';
 import {markedTerminal} from 'marked-terminal';
+import { initializeNetraObservability } from './observability.js';
 
 // Configure marked to use terminal renderer
 //@ts-ignore
@@ -115,6 +116,7 @@ const app = workflow.compile();
 
 // REPL functionality
 async function runREPL() {
+  await initializeNetraObservability();
   console.log(chalk.cyan.bold('\n🗓️  Calendar Agent REPL'));
   console.log(chalk.gray('─'.repeat(50)));
   console.log(chalk.yellow('Type your requests or "exit" to quit\n'));

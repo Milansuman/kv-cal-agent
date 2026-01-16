@@ -5,10 +5,10 @@ import { events, eventTypes, attendees, reminders, attendeeStatusEnum } from './
 import { eq, and, gte, lte, desc, asc } from 'drizzle-orm';
 import { detectConflicts } from './conflict.js';
 
-// ============= CONFLICT DETECTION TOOL =============
+class AgentTools{
+  constructor(){}
 
-export const checkEventConflicts = tool(
-  async ({ startTime, endTime, excludeEventId }) => {
+  async checkEventConflicts(startTime: Date, endTime: Date, excludeEventId?: number): Promise<string> {
     try {
       const result = await detectConflicts(
         new Date(startTime),
@@ -20,6 +20,32 @@ export const checkEventConflicts = tool(
     } catch (error) {
       return `Error checking conflicts: ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
+  }
+
+  
+  async createEventType(name: string, color: string, description?: string){
+    try {
+      const [eventType] = await db.insert(eventTypes).values({ name, color, description }).returning();
+      if (!eventType) {
+        return 'Error: Failed to create event type';
+      }
+      return `Event type created: ${eventType.name} (${eventType.color})`;
+    } catch (error) {
+      return `Error creating event type: ${error instanceof Error ? error.message : 'Unknown error'}`;
+    }
+  }
+}
+
+// ============= CONFLICT DETECTION TOOL =============
+
+export const checkEventConflicts = tool(
+  async ({ startTime, endTime, excludeEventId }) => {
+    const agentTools = new AgentTools();
+    return await agentTools.checkEventConflicts(
+      new Date(startTime),
+      new Date(endTime),
+      excludeEventId
+    );
   },
   {
     name: 'check_event_conflicts',
@@ -36,15 +62,8 @@ export const checkEventConflicts = tool(
 
 export const createEventType = tool(
   async ({ name, color, description }) => {
-    try {
-      const [eventType] = await db.insert(eventTypes).values({ name, color, description }).returning();
-      if (!eventType) {
-        return 'Error: Failed to create event type';
-      }
-      return `Event type created: ${eventType.name} (${eventType.color})`;
-    } catch (error) {
-      return `Error creating event type: ${error instanceof Error ? error.message : 'Unknown error'}`;
-    }
+    const agentTools = new AgentTools();
+    return await agentTools.createEventType(name, color, description);
   },
   {
     name: 'create_event_type',
